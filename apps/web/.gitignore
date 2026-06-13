@@ -1,0 +1,69 @@
+# ==========================================
+# 1. DEPENDENCIES & PACKAGE MANAGERS
+# ==========================================
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
+lock-woke.lock
+
+# ==========================================
+# 2. APPLICATION RUNTIMES & BUILD OUTPUTS
+# ==========================================
+# Next.js build output
+.next/
+out/
+
+# Production build outputs
+build/
+dist/
+
+# Serverless development directories
+.serverless/
+
+# ==========================================
+# 3. ENVIRONMENT KEYS & SECRETS (CRITICAL)
+# ==========================================
+# Never track local infrastructure credentials
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Supabase local configuration secrets
+supabase/.temp/
+supabase/.env
+
+# ==========================================
+# 4. DATABASE & PRISMA ENGINE BINARIES
+# ==========================================
+# Exclude database files and Prisma generated engines
+*.db
+*.db-journal
+/src/prisma/generated-client/
+
+# ==========================================
+# 5. DIAGNOSTIC LOGS & CACHES
+# ==========================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+.stylelintcache
+*.local.log
+
+# ==========================================
+# 6. OPERATING SYSTEM JUNKS
+# ==========================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj

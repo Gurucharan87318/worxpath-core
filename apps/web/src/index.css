@@ -1,0 +1,455 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+/* =========================================================
+   WORXPATH Landing Page Add-on Styles
+   Clean SaaS motion + reveal system
+   ========================================================= */
+
+:root {
+  --wp-bg: #ffffff;
+  --wp-bg-soft: #f8f9fa;
+  --wp-bg-blue: #eff6ff;
+
+  --wp-text: #0f172a;
+  --wp-text-muted: #475569;
+  --wp-text-soft: #94a3b8;
+
+  --wp-blue: #2563eb;
+  --wp-blue-dark: #1d4ed8;
+  --wp-blue-soft: #dbeafe;
+
+  --wp-border: #e2e8f0;
+  --wp-border-soft: #f1f5f9;
+
+  --wp-footer: #0b1120;
+  --wp-footer-text: #cbd5e1;
+  --wp-footer-soft: #94a3b8;
+
+  --wp-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --wp-shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.05);
+  --wp-shadow-md: 0 18px 40px rgba(15, 23, 42, 0.06);
+  --wp-shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.08);
+
+  --wp-radius-sm: 14px;
+  --wp-radius-md: 20px;
+  --wp-radius-lg: 28px;
+
+  --wp-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --wp-fast: 180ms;
+  --wp-medium: 320ms;
+  --wp-slow: 700ms;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: var(--wp-bg);
+  color: var(--wp-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--wp-blue-soft);
+  color: var(--wp-text);
+}
+
+/* =========================================================
+   Reveal system
+   Use with your existing <Reveal /> wrapper
+   ========================================================= */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(6px);
+  transition:
+    opacity var(--wp-slow) var(--wp-ease),
+    transform var(--wp-slow) var(--wp-ease),
+    filter var(--wp-slow) var(--wp-ease);
+  will-change: opacity, transform, filter;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Optional stagger helpers */
+.reveal-delay-1 {
+  transition-delay: 60ms;
+}
+.reveal-delay-2 {
+  transition-delay: 120ms;
+}
+.reveal-delay-3 {
+  transition-delay: 180ms;
+}
+.reveal-delay-4 {
+  transition-delay: 240ms;
+}
+
+/* =========================================================
+   Global surface helpers
+   ========================================================= */
+
+.wp-surface {
+  background: var(--wp-bg);
+  border: 1px solid var(--wp-border-soft);
+  box-shadow: var(--wp-shadow-sm);
+  border-radius: var(--wp-radius-md);
+}
+
+.wp-surface-soft {
+  background: var(--wp-bg-soft);
+  border: 1px solid var(--wp-border-soft);
+  box-shadow: var(--wp-shadow-xs);
+  border-radius: var(--wp-radius-md);
+}
+
+.wp-surface-blue {
+  background: var(--wp-bg-blue);
+  border: 1px solid #dbeafe;
+  box-shadow: var(--wp-shadow-xs);
+  border-radius: var(--wp-radius-md);
+}
+
+/* =========================================================
+   Navigation polish
+   ========================================================= */
+
+header {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+header a {
+  transition: color var(--wp-fast) ease, opacity var(--wp-fast) ease;
+}
+
+header a:hover {
+  opacity: 1;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.wp-btn,
+a[class*="bg-blue-600"],
+a[class*="border-slate-200"],
+button {
+  transition:
+    background-color var(--wp-fast) ease,
+    border-color var(--wp-fast) ease,
+    color var(--wp-fast) ease,
+    box-shadow var(--wp-medium) var(--wp-ease),
+    transform var(--wp-medium) var(--wp-ease);
+  will-change: transform;
+}
+
+.wp-btn:hover,
+a[class*="bg-blue-600"]:hover,
+a[class*="border-slate-200"]:hover,
+button:hover {
+  transform: translateY(-1px);
+}
+
+.wp-btn:active,
+a[class*="bg-blue-600"]:active,
+a[class*="border-slate-200"]:active,
+button:active {
+  transform: translateY(0);
+}
+
+.wp-btn:focus-visible,
+a[class*="bg-blue-600"]:focus-visible,
+a[class*="border-slate-200"]:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.28);
+  outline-offset: 2px;
+}
+
+/* Strong CTA pulse-free premium glow */
+a[class*="bg-blue-600"] {
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.22) inset;
+}
+
+a[class*="bg-blue-600"]:hover {
+  box-shadow:
+    0 14px 28px rgba(37, 99, 235, 0.22),
+    0 1px 0 rgba(255, 255, 255, 0.22) inset;
+}
+
+/* =========================================================
+   Card motion
+   ========================================================= */
+
+.rounded-\[28px\],
+.rounded-\[32px\],
+.rounded-2xl,
+.rounded-3xl {
+  transition:
+    transform var(--wp-medium) var(--wp-ease),
+    box-shadow var(--wp-medium) var(--wp-ease),
+    border-color var(--wp-fast) ease,
+    background-color var(--wp-fast) ease;
+}
+
+.rounded-\[28px\]:hover,
+.rounded-\[32px\]:hover,
+.rounded-2xl:hover,
+.rounded-3xl:hover {
+  box-shadow: var(--wp-shadow-md);
+}
+
+/* Optional utility class for intentional hover cards */
+.wp-hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--wp-shadow-md);
+}
+
+/* =========================================================
+   Hero terminal polish
+   ========================================================= */
+
+.wp-terminal {
+  position: relative;
+  overflow: hidden;
+}
+
+.wp-terminal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  animation: wp-terminal-sheen 4.8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes wp-terminal-sheen {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(140%);
+  }
+}
+
+/* Small live dot pulse */
+.wp-live-dot {
+  position: relative;
+}
+
+.wp-live-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.18);
+  animation: wp-pulse 1.8s ease-out infinite;
+  z-index: -1;
+}
+
+@keyframes wp-pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   Underline animation for text links
+   ========================================================= */
+
+.wp-link-underline {
+  position: relative;
+}
+
+.wp-link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--wp-medium) var(--wp-ease);
+}
+
+.wp-link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* =========================================================
+   Divider polish
+   ========================================================= */
+
+.wp-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(148, 163, 184, 0.38) 20%,
+    rgba(148, 163, 184, 0.38) 80%,
+    transparent 100%
+  );
+}
+
+/* =========================================================
+   Footer styling addon
+   ========================================================= */
+
+footer {
+  background: var(--wp-footer);
+  color: var(--wp-footer-text);
+}
+
+footer a {
+  transition: color var(--wp-fast) ease, opacity var(--wp-fast) ease;
+}
+
+footer a:hover {
+  color: #ffffff;
+}
+
+footer .footer-soft {
+  color: var(--wp-footer-soft);
+}
+
+/* =========================================================
+   Smooth icon motion
+   ========================================================= */
+
+svg {
+  transition:
+    transform var(--wp-medium) var(--wp-ease),
+    color var(--wp-fast) ease;
+}
+
+a:hover svg,
+button:hover svg {
+  transform: translateX(1px);
+}
+
+/* =========================================================
+   Optional floating slow accent for hero chips/cards
+   Add class manually where needed
+   ========================================================= */
+
+.wp-float-subtle {
+  animation: wp-float-subtle 5.5s ease-in-out infinite;
+}
+
+@keyframes wp-float-subtle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* =========================================================
+   Section heading entrance refinement
+   ========================================================= */
+
+.wp-heading-tight {
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.wp-subtext {
+  color: var(--wp-text-muted);
+  line-height: 1.8;
+}
+
+/* =========================================================
+   Grid item stagger helpers for cards
+   ========================================================= */
+
+.wp-stagger > *:nth-child(1) {
+  transition-delay: 40ms;
+}
+.wp-stagger > *:nth-child(2) {
+  transition-delay: 100ms;
+}
+.wp-stagger > *:nth-child(3) {
+  transition-delay: 160ms;
+}
+.wp-stagger > *:nth-child(4) {
+  transition-delay: 220ms;
+}
+
+/* =========================================================
+   Responsive polish
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  [data-reveal] {
+    transform: translateY(18px);
+  }
+}
+
+@media (max-width: 768px) {
+  [data-reveal] {
+    filter: blur(0);
+  }
+
+  .wp-btn,
+  a[class*="bg-blue-600"],
+  a[class*="border-slate-200"] {
+    min-height: 46px;
+  }
+}
+
+/* =========================================================
+   Reduced motion safety
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

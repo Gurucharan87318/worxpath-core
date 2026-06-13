@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile         UserProfile?
+  progress        LearningProgress[]
+  evidenceItems   EvidenceItem[]
+  woraMessages    WoraMessage[]
+  resume          Resume?
+  repath          RePathSession?
+  challengeDrafts ChallengeDraft[]
+  telemetryLogs   TelemetryLog[]
+}
+
+model UserProfile {
+  id                 String    @id @default(cuid())
+  userId             String    @unique
+  xpTotal            Int       @default(0)
+  currentStreak      Int       @default(0)
+  longestStreak      Int       @default(0)
+  lastActivityAt     DateTime?
+  gpsScore           Json?
+  gpsSkillGaps       Json?
+  recommendedTrack   String?
+  activeTrackId      String?
+  currentDayNumber   Int       @default(1)
+  archivedDayNumbers Int[]
+  isRePathActive     Boolean   @default(false)
+  onboardingComplete Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeTrack Track? @relation("ActiveTrack", fields: [activeTrackId], references: [id], onDelete: SetNull)
+
+  @@index([activeTrackId])
+}
+
+model Track {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  totalDays   Int
+  modules     Module[]
+
+  activeUsers UserProfile[] @relation("ActiveTrack")
+}
+
+model Module {
+  id          String  @id @default(cuid())
+  trackId     String
+  title       String
+  description String?
+  order       Int
+  days        Day[]
+
+  track Track @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@index([trackId, order])
+}
+
+model Day {
+  id         String             @id @default(cuid())
+  moduleId   String
+  dayNumber  Int
+  title      String
+  readingMd  String
+  xpReward   Int                @default(50)
+  challenges Challenge[]
+  progress   LearningProgress[]
+
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([moduleId, dayNumber])
+  @@index([moduleId, dayNumber])
+}
+
+model Challenge {
+  id          String        @id @default(cuid())
+  dayId       String
+  type        ChallengeType
+  prompt      String
+  starterCode String?
+  solution    String?
+  xpReward    Int           @default(25)
+  order       Int           @default(1)
+
+  day    Day              @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  drafts ChallengeDraft[]
+
+  @@index([dayId, order])
+}
+
+enum ChallengeType {
+  SQL
+  PYTHON
+  QUIZ
+  CASE_STUDY
+  RESILIENCE
+  WEALTH
+  TYPESCRIPT
+}
+
+model LearningProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  dayId       String
+  completed   Boolean   @default(false)
+  xpEarned    Int       @default(0)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day  Day  @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, dayId])
+  @@index([userId, completed])
+}
+
+model ChallengeDraft {
+  id          String   @id @default(cuid())
+  userId      String
+  challengeId String
+  draftCode   String
+  language    String?
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, challengeId])
+  @@index([userId])
+}
+
+model WoraMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model RePathSession {
+  id                 String       @id @default(cuid())
+  userId             String       @unique
+  triggeredAt        DateTime     @default(now())
+  resolvedAt         DateTime?
+  status             RePathStatus @default(ACTIVE)
+  recoveryPlan       Json?
+  archivedDayNumbers Int[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum RePathStatus {
+  ACTIVE
+  IN_PROGRESS
+  RESOLVED
+}
+
+model EvidenceItem {
+  id          String       @id @default(cuid())
+  userId      String
+  type        EvidenceType
+  title       String
+  description String?
+  metadata    Json?
+  createdAt   DateTime     @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+enum EvidenceType {
+  CODE_EXECUTION
+  CHALLENGE_COMPLETION
+  CASE_STUDY
+  PEER_REVIEW
+  MODULE_COMPLETION
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  data      Json
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TelemetryLog {
+  id        String   @id @default(cuid())
+  userId    String
+  dayId     String?
+  dayNumber Int?
+  eventType String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, dayNumber])
+}
